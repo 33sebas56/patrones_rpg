@@ -14,11 +14,17 @@ public class BattleService {
 
     private final HeroBuilderService heroBuilderService;
     private final EnemyFactory enemyFactory;
+    private final NarrationService narrationService;
     private final Random random;
 
-    public BattleService(HeroBuilderService heroBuilderService, EnemyFactory enemyFactory) {
+    public BattleService(
+            HeroBuilderService heroBuilderService,
+            EnemyFactory enemyFactory,
+            NarrationService narrationService
+    ) {
         this.heroBuilderService = heroBuilderService;
         this.enemyFactory = enemyFactory;
+        this.narrationService = narrationService;
         this.random = new Random();
     }
 
@@ -30,81 +36,38 @@ public class BattleService {
         int enemyCurrentHealth = enemy.getHealth();
 
         StringBuilder log = new StringBuilder();
-        log.append("Battle starts: ")
-                .append(hero.getName())
-                .append(" vs ")
-                .append(enemy.getName())
-                .append("\n\n");
+        log.append(narrationService.battleStart(hero.getName(), enemy.getName()));
 
         boolean heroTurn = hero.getSpeed() >= enemy.getSpeed();
-
         int round = 1;
 
         while (heroCurrentHealth > 0 && enemyCurrentHealth > 0) {
-            log.append("Round ").append(round).append(":\n");
+            log.append(narrationService.roundHeader(round));
 
             if (heroTurn) {
-                int damage = calculateHeroDamage(hero, enemy);
-                enemyCurrentHealth -= damage;
-                if (enemyCurrentHealth < 0) {
-                    enemyCurrentHealth = 0;
-                }
-
-                log.append(hero.getName())
-                        .append(" hits ")
-                        .append(enemy.getName())
-                        .append(" for ")
-                        .append(damage)
-                        .append(" damage. Enemy HP: ")
-                        .append(enemyCurrentHealth)
-                        .append("\n");
+                int heroDamage = calculateHeroDamage(hero, enemy);
+                enemyCurrentHealth = Math.max(0, enemyCurrentHealth - heroDamage);
+                log.append(narrationService.heroAttack(hero.getName(), enemy.getName(), heroDamage, enemyCurrentHealth));
 
                 if (enemyCurrentHealth <= 0) {
                     break;
                 }
 
                 int enemyDamage = calculateEnemyDamage(enemy, hero);
-                heroCurrentHealth -= enemyDamage;
-                if (heroCurrentHealth < 0) {
-                    heroCurrentHealth = 0;
-                }
-
-                log.append(enemy.getName())
-                        .append(" strikes back for ")
-                        .append(enemyDamage)
-                        .append(" damage. Hero HP: ")
-                        .append(heroCurrentHealth)
-                        .append("\n");
+                heroCurrentHealth = Math.max(0, heroCurrentHealth - enemyDamage);
+                log.append(narrationService.enemyCounter(enemy.getName(), enemyDamage, heroCurrentHealth));
             } else {
                 int enemyDamage = calculateEnemyDamage(enemy, hero);
-                heroCurrentHealth -= enemyDamage;
-                if (heroCurrentHealth < 0) {
-                    heroCurrentHealth = 0;
-                }
-
-                log.append(enemy.getName())
-                        .append(" attacks first for ")
-                        .append(enemyDamage)
-                        .append(" damage. Hero HP: ")
-                        .append(heroCurrentHealth)
-                        .append("\n");
+                heroCurrentHealth = Math.max(0, heroCurrentHealth - enemyDamage);
+                log.append(narrationService.enemyAttack(enemy.getName(), enemyDamage, heroCurrentHealth));
 
                 if (heroCurrentHealth <= 0) {
                     break;
                 }
 
-                int damage = calculateHeroDamage(hero, enemy);
-                enemyCurrentHealth -= damage;
-                if (enemyCurrentHealth < 0) {
-                    enemyCurrentHealth = 0;
-                }
-
-                log.append(hero.getName())
-                        .append(" responds for ")
-                        .append(damage)
-                        .append(" damage. Enemy HP: ")
-                        .append(enemyCurrentHealth)
-                        .append("\n");
+                int heroDamage = calculateHeroDamage(hero, enemy);
+                enemyCurrentHealth = Math.max(0, enemyCurrentHealth - heroDamage);
+                log.append(narrationService.heroCounter(hero.getName(), heroDamage, enemyCurrentHealth));
             }
 
             log.append("\n");
@@ -116,8 +79,7 @@ public class BattleService {
         }
 
         String winner = heroCurrentHealth > 0 ? hero.getName() : enemy.getName();
-
-        log.append("Winner: ").append(winner);
+        log.append(narrationService.winner(winner));
 
         return new BattleResultResponse(
                 hero.getName(),

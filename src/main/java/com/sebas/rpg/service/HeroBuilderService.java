@@ -53,6 +53,11 @@ public class HeroBuilderService {
     }
 
     public HeroResponse applyBuff(BuffType buffType) {
+        applyEffect(buffType);
+        return toResponse(currentHero);
+    }
+
+    public void applyEffect(BuffType buffType) {
         Hero hero = getCurrentHeroOrThrow();
 
         currentHero = switch (buffType) {
@@ -64,17 +69,22 @@ public class HeroBuilderService {
             case BROKEN_HEART -> new BrokenHeartDebuffDecorator(hero);
             case EXISTENTIAL_CRISIS -> new ExistentialCrisisDebuffDecorator(hero);
         };
-
-        return toResponse(currentHero);
     }
 
     public HeroResponse getCurrentHero() {
-        Hero hero = getCurrentHeroOrThrow();
-        return toResponse(hero);
+        return toResponse(getCurrentHeroOrThrow());
     }
 
     public Hero getCurrentHeroEntity() {
         return getCurrentHeroOrThrow();
+    }
+
+    public boolean hasHero() {
+        return currentHero != null;
+    }
+
+    public void resetHero() {
+        currentHero = null;
     }
 
     private Hero getCurrentHeroOrThrow() {

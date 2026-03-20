@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decorator RPG Simulator</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="container">
+    <header class="hero-header">
+        <h1>Decorator RPG Simulator</h1>
+        <p>Arma a tu héroe, toma decisiones cuestionables y sobrevive a sus consecuencias.</p>
+    </header>
+
+    <main class="grid">
+        <section class="card">
+            <h2>1. Crear héroe</h2>
+
+            <label for="heroName">Nombre</label>
+            <input type="text" id="heroName" placeholder="Ej. Sebas">
+
+            <label for="heroClass">Clase</label>
+            <select id="heroClass">
+                <option value="WARRIOR">Guerrero</option>
+                <option value="MAGE">Mago</option>
+                <option value="ROGUE">Pícaro</option>
+                <option value="INTERN">Becario ancestral</option>
+            </select>
+
+            <button id="createHeroBtn">Crear héroe</button>
+        </section>
+
+        <section class="card">
+            <h2>2. Equipar item</h2>
+
+            <label for="itemType">Item</label>
+            <select id="itemType">
+                <option value="IRON_ARMOR">Armadura de hierro</option>
+                <option value="CARDBOARD_ARMOR">Armadura de cartón premium</option>
+                <option value="LEGENDARY_SANDAL">Chancla legendaria</option>
+                <option value="RUSTY_SWORD">Espada oxidada con lore</option>
+                <option value="BUDGET_SHIELD">Escudo de presupuesto</option>
+                <option value="SUSPICIOUS_AMULET">Amuleto sospechoso</option>
+            </select>
+
+            <button id="equipItemBtn">Equipar item</button>
+        </section>
+
+        <section class="card">
+            <h2>3. Aplicar buff o debuff</h2>
+
+            <label for="buffType">Efecto</label>
+            <select id="buffType">
+                <option value="COFFEE_RUSH">Café colombiano épico</option>
+                <option value="MOM_BLESSING">Bendición materna</option>
+                <option value="MAIN_CHARACTER">Síndrome de protagonista</option>
+                <option value="NIGHT_SHIFT">Modo nocturno insalubre</option>
+                <option value="CONFUSION">Confusión</option>
+                <option value="BROKEN_HEART">Corazón roto</option>
+                <option value="EXISTENTIAL_CRISIS">Crisis existencial</option>
+            </select>
+
+            <button id="applyBuffBtn">Aplicar efecto</button>
+        </section>
+
+        <section class="card">
+            <h2>4. Evento aleatorio</h2>
+
+            <button id="getEventBtn">Obtener evento</button>
+
+            <div id="eventBox" class="event-box hidden">
+                <h3 id="eventTitle"></h3>
+                <p id="eventDescription"></p>
+
+                <label for="eventChoice">Decisión</label>
+                <select id="eventChoice"></select>
+
+                <button id="resolveEventBtn">Resolver evento</button>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>5. Simular combate</h2>
+
+            <label for="enemyType">Enemigo</label>
+            <select id="enemyType">
+                <option value="COMPILER_BEAST">Compiler Beast</option>
+                <option value="MONDAY_BOSS">Monday Boss</option>
+                <option value="NULL_POINTER_PHANTOM">NullPointer Phantom</option>
+                <option value="TAX_COLLECTOR">Tax Collector</option>
+            </select>
+
+            <button id="battleBtn">Pelear</button>
+        </section>
+
+        <section class="card hero-panel">
+            <h2>Estado actual del héroe</h2>
+            <button id="refreshHeroBtn" class="secondary">Actualizar estado</button>
+
+            <div id="heroInfo" class="hero-info">
+                <p>No hay héroe creado todavía. Qué paz.</p>
+            </div>
+        </section>
+
+        <section class="card log-panel">
+            <h2>Resultado / Narrativa</h2>
+            <div id="messageBox" class="message-box">
+                Aquí aparecerán los resultados. Por ahora solo existe el vacío.
+            </div>
+        </section>
+    </main>
+</div>
+
+<script src="/js/app.js"></script>
+</body>
+</html>

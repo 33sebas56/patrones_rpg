@@ -40,4 +40,10 @@ public class HeroController {
     public ResponseEntity<HeroResponse> getCurrentHero() {
         return ResponseEntity.ok(heroBuilderService.getCurrentHero());
     }
+
+    @DeleteMapping("/current")
+    public ResponseEntity<String> resetHero() {
+        heroBuilderService.resetHero();
+        return ResponseEntity.ok("Hero has been reset");
+    }
 }
